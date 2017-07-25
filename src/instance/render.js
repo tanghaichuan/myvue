@@ -1,5 +1,6 @@
 export function initRender(vm) {
 	_compileNode(vm.$el, vm);
+	
 }
 
 function _compileNode(node, vm) {
