@@ -1,12 +1,9 @@
-import {
-	test
-} from './test';
 
-var callback = function(newVal, oldVal, path) {
-	console.log(oldVal + ":" + newVal + ":" + path);
-}
+import Mue from './instance/index'
 
 var data = {
+	el:'#app',
+	msg:'hello',
 	a: 10,
 	state: {
 		b: "aaa",
@@ -17,4 +14,4 @@ var data = {
 	}
 }
 
-var Vm = new test(data, callback);
+const Vm=new Mue(data);
