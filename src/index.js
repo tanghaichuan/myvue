@@ -1,6 +1,6 @@
 import {
-	mue
-} from './mue';
+	test
+} from './test';
 
 var callback = function(newVal, oldVal, path) {
 	console.log(oldVal + ":" + newVal + ":" + path);
@@ -17,6 +17,4 @@ var data = {
 	}
 }
 
-var Vm = new mue(data, callback);
-data.a = 200;
-data.state.c.push(4);
+var Vm = new test(data, callback);
