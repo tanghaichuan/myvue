@@ -12,6 +12,7 @@ export function initMixin(Mue) {
 
 		vm.$data = options;
 		vm.$el = document.querySelector(options.el);
+		vm.$template = vm.$el.cloneNode(true);
 		initRender(vm);
 		//console.log(vm)
 		initState(vm);

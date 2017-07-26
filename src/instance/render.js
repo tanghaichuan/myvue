@@ -1,9 +1,16 @@
+
+
 export function initRender(vm) {
-	_compileNode(vm.$el, vm);
-	
+	vm.fragment = document.createDocumentFragment();
+	vm.currentList = [];
+	vm.currentList.push(vm.fragment);
+	_compileNode(vm.$template, vm);
+
+	vm.$el.parentNode.replaceChild(vm.fragment, vm.$el);
+	vm.$el=document.querySelector(vm.$data.el);
 }
 
-function _compileNode(node, vm) {
+function _compileNode(node,vm) {
 	switch (node.nodeType) {
 		// 元素节点
 		case 1:
@@ -19,7 +26,18 @@ function _compileNode(node, vm) {
 }
 
 function _compileElement(node, vm) {
+	let newNode =document.createElement(node.tagName);
+
 	if (node.hasChildNodes()) {
+		let attrs = node.attributes;
+		Array.from(attrs).forEach(attrs => {
+			newNode.setAttribute(attrs.name, attrs.value);
+		});
+	}
+
+	let currentNode = vm.currentList[vm.currentList.length - 1].appendChild(newNode);
+	if (node.hasChildNodes()) {
+		vm.currentList.push(currentNode);
 		Array.from(node.childNodes).forEach(node => {
 			_compileNode(node, vm)
 		});
@@ -38,9 +56,7 @@ function _compileText(node, vm) {
 	ret.forEach(value => {
 		let property = value.replace(/[{{}}]/g, '');
 		nodeValue = nodeValue.replace(value, vm.$data[property]);
-		//console.log(nodeValue)
-
 	}, vm);
 
-	node.nodeValue = nodeValue;
+	vm.currentList[vm.currentList.length - 1].appendChild(document.createTextNode(nodeValue));
 }
