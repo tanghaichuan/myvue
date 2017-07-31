@@ -1,12 +1,14 @@
 
-
 export function initRender(vm) {
+	// Fragment不是实质的节点
 	vm.fragment = document.createDocumentFragment();
 	vm.currentList = [];
 	vm.currentList.push(vm.fragment);
 	_compileNode(vm.$template, vm);
 
+	// 将文档片段替换原节点
 	vm.$el.parentNode.replaceChild(vm.fragment, vm.$el);
+	// 更新 $el
 	vm.$el=document.querySelector(vm.$data.el);
 }
 

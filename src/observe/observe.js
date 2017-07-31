@@ -1,4 +1,4 @@
 
 export function observe(obj) {
-	//console.log(obj)
+	const vm: Component = this
 }

@@ -1,11 +1,10 @@
 
-import Mue from './instance/index'
+//import Mue from './instance/index'
+import Mue from './mue/'
 
-var data = {
+var options = {
 	el:'#app',
-	msg:'hello',
-	a: 10,
-	state: {
+	data:{
 		b: "aaa",
 		c: [1, 2, 3],
 		level: {
@@ -14,4 +13,4 @@ var data = {
 	}
 }
 
-const Vm=new Mue(data);
+const Vm=new Mue(options);
