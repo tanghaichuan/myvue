@@ -20,8 +20,9 @@ const Vm = new Mue(options);
 
 Vm.a=3;
 
-Vm.$watch('b', () => console.log('level发生了改变'));
+Vm.$watch('level.d', () => console.log('level发生了改变'));
 setTimeout(() => {
-	Vm.b = 'bbb';
-
+	Vm.level.d = 10;
 }, 1000);
+
+console.log(Vm)

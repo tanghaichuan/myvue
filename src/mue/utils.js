@@ -27,9 +27,11 @@ export function parsePath (path: string): any {
   }
   const segments = path.split('.')
   return function (obj) {
+    //console.log(obj._data)
+    //console.log(segments) // 访问属性路径,闭包记录现场
     for (let i = 0; i < segments.length; i++) {
       if (!obj) return
-      obj = obj[segments[i]]
+      obj = obj._data[segments[i]]  
     }
     return obj
   }
