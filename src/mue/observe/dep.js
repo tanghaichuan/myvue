@@ -16,7 +16,7 @@ Dep.target = null;
 const targetStack = [];
 
 export function pushTarget(_target){
-	if (Dep.target) targetStack.push(Dep.target);	// 避免重复监听
+	if (Dep.target) targetStack.push(Dep.target);
 	Dep.target = _target;
 }
 

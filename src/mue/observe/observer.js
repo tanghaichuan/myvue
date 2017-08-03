@@ -1,15 +1,23 @@
 import {
-	isObj
+	isObj,
+	isArr
 } from '../utils'
 
 import {
 	Dep
 } from './dep'
 
+
 class Observer {
 	constructor(value) {
 		this.value = value;
-		this.walk(value);
+
+		if (isObj(this.value)) {
+			this.walk(value);
+		} else {
+			this.observeArray(value)
+		}
+
 	}
 	walk(value) {
 			Object.keys(value).forEach(key => this.convert(key, value[key])) // 递归遍历data下的所有属性
@@ -17,6 +25,12 @@ class Observer {
 		// 闭包
 	convert(key, val) {
 		defineReactive(this.value, key, val);
+	}
+
+	observeArray(items) {
+		for (let i = 0, l = items.length; i < l; i++) {
+			observe(items[i])
+		}
 	}
 }
 // 对每个Object类型进行数据拦截，发生数据变动收集依赖，订阅事件
@@ -34,7 +48,6 @@ function defineReactive(obj, key, val) {
 
 	let childOb = observe(val); // 复杂对象
 
-
 	Object.defineProperty(obj, key, {
 		enumerable: true,
 		configurable: true,
@@ -44,7 +57,14 @@ function defineReactive(obj, key, val) {
 			// Dep相对于当前key的context而言，
 			if (Dep.target) {
 				//console.log(Dep.target)
+				
 				dep.addSub(Dep.target); // 特定get，添加Watcher对象
+				if (childOb) {
+					//childOb.dep.addSub(Dep.target);
+					//childOb.dep.addSub(Dep.target);
+					//childOb.dep.depend();
+					//console.log(dep)
+				}
 				
 			}
 			return val;
@@ -69,3 +89,4 @@ export function observe(value, vm) {
 	}*/
 	return new Observer(value)
 }
+

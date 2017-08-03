@@ -44,7 +44,7 @@ export class Watcher {
 
 		temp = []; // 用于记录递归查找的属性值
 		let value;
-		value = traverse(this.vm._data, seen).pop();
+		value = traverse(this.vm._data, seen).pop();// 基本上实现了对复杂对象的监测
 		
 		//value = this.vm._data[this.expOrFn];
 		//value = this.getter;		// getter拿到变化后的值？
