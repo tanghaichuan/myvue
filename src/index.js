@@ -19,11 +19,13 @@ var options = {
 const Vm = new Mue(options);
 
 //Vm.c.push(4);
-Vm.c.push(4);
 
-Vm.$watch('level.d', () => console.log('level发生了改变'));
+/*Vm.$watch('level.d', () => console.log('level发生了改变'));
 setTimeout(() => {
 	Vm.level.d=10;
-}, 1000);
+}, 1000);*/
 
-console.log(Vm)
+Vm.$watch('c', () => console.log('c发生了改变'));
+setTimeout(() => {
+	Vm.c.push(4);
+}, 2000);

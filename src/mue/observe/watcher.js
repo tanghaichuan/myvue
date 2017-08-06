@@ -6,10 +6,12 @@ import {
 import {
 	parsePath,
 	isObj,
-	isArr
+	isArr,
+	cloneObj
 } from '../utils'
 // 订阅器
 // 访问对象时将检测对象添加入targetStack中，对象发生改变触发run()进行值对比。
+
 export class Watcher {
 	constructor(
 		vm: Component,
@@ -25,33 +27,29 @@ export class Watcher {
 			this.getter = this.expOrFn;
 		} else {
 			//this.getter = parsePath(expOrFn);
-
-			this.value = this.get(); // 访问原始未变化属性
-
+			this.value = this.get(); // watcher绑定时,访问原始未变化属性
+			this.newArr = cloneObj(this.value)
+			console.log(this.newArr)
 		}
-
 	}
 	get() {
-		pushTarget(this); // Dep.target=this，即指向this.expOrFn的context;
-
+		pushTarget(this); // 实例化watcher要改变target的context,Dep.target=this，即指向this.expOrFn的context;
 		//if(typeof this.getter === 'string') return;	// 监测值变更时又访问了属性一遍？
 		/*if(typeof this.getter === 'function'){
 			this.getter = this.getter.call(this.vm,this.vm);
 		}*/
-
 		const segments = this.expOrFn.split('.'); // 参数路径
 		let seen = segments.pop(); // 查找值
-
-		temp = []; // 用于记录递归查找的属性值
+		
 		let value;
 		value = traverse(this.vm._data, seen).pop();// 基本上实现了对复杂对象的监测
-		
+		temp = []; // 清空用于记录递归查找的属性值
 		//value = this.vm._data[this.expOrFn];
 		//value = this.getter;		// getter拿到变化后的值？
 
 		popTarget();
-		this.cleanupDeps(); // 未实现
 
+		this.cleanupDeps(); // 未实现
 		return value;
 	}
 	update() {
@@ -59,7 +57,7 @@ export class Watcher {
 	}
 	run() { // value发生变化，调用回调函数
 		const value = this.get();
-		if (value !== this.value) {
+		if (value !== this.newArr) {
 			this.value = value;
 			this.cb.call(this.vm);
 		}
@@ -84,5 +82,4 @@ function traverse(obj, seen) {
 		});
 		return temp
 	}
-	
 }

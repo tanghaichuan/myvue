@@ -1,3 +1,4 @@
+
 // 发布器
 export class Dep {
 	constructor() {
@@ -5,7 +6,6 @@ export class Dep {
 	}
 	addSub(sub) {
 		this.subs.push(sub); // 依赖池添加Watcher
-		//console.log(this.subs)
 	}
 	notify() {
 		this.subs.forEach(sub => sub.update()); // set触发时，更新队列中的Wathcer
@@ -15,11 +15,11 @@ export class Dep {
 Dep.target = null;
 const targetStack = [];
 
-export function pushTarget(_target){
+export function pushTarget(_target) {
 	if (Dep.target) targetStack.push(Dep.target);
 	Dep.target = _target;
 }
 
-export function popTarget () {
-  Dep.target = targetStack.pop()
+export function popTarget() {
+	Dep.target = targetStack.pop()
 }
