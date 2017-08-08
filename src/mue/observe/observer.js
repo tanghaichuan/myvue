@@ -14,7 +14,6 @@ class Observer {
 	constructor(value) {
 		this.value = value;
 		this.dep = new Dep();
-		def(value, '__ob__', this);
 		if (isObj(this.value)) {
 			this.walk(value);
 		} else {

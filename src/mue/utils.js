@@ -2,14 +2,14 @@
  *  Object 判断
  */
 export const isObj = function(obj) {
-	return Object.prototype.toString.call(obj) == '[object Object]';
+  return Object.prototype.toString.call(obj) == '[object Object]';
 }
 
 /*
  *  Array 判断
  */
 export const isArr = function(obj) {
-	return Object.prototype.toString.call(obj) == '[object Array]';
+  return Object.prototype.toString.call(obj) == '[object Array]';
 }
 
 /*
@@ -21,24 +21,24 @@ export const arrOps = ['push', 'pop', 'shift', 'unshift', 'splice', 'sort', 'rev
  * 参数路径.
  */
 const bailRE = /[^\w.$]/
-export function parsePath (path: string): any {
+export function parsePath(path: string): any {
   if (bailRE.test(path)) {
     return
   }
   const segments = path.split('.')
-  return function (obj) {
+  return function(obj) {
     //console.log(obj._data)
     //console.log(segments) // 访问属性路径,闭包记录现场
     for (let i = 0; i < segments.length; i++) {
       if (!obj) return
-      obj = obj._data[segments[i]]  
+      obj = obj._data[segments[i]]
     }
     return obj
   }
 }
 
 
-export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
+export function def(obj: Object, key: string, val: any, enumerable ? : boolean) {
   Object.defineProperty(obj, key, {
     value: val,
     enumerable: !!enumerable,
@@ -51,19 +51,23 @@ export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
  * 深拷贝
  */
 
-export function cloneObj(obj){
-  var str, newobj = obj.constructor === Array ? [] : {};
-  if(typeof obj !== 'object'){
-      return;
-  } else if(window.JSON){
-      str = JSON.stringify(obj), //系列化对象
-      newobj = JSON.parse(str); //还原
-  } else {
-      for(var i in obj){
-          newobj[i] = typeof obj[i] === 'object' ? 
-          cloneObj(obj[i]) : obj[i]; 
-      }
-   }
+export function cloneObj(obj) {
+  let newobj;
+  if (!isArr(obj) && !isObj(obj)) {
+    return obj;
+  }
+
+  newobj = isArr(obj) ? [] : {};
+  for (let i in obj) {
+    newobj[i] = (isObj(obj[i]) || isArr(obj[i])) ? cloneObj(obj[i]) : obj[i];
+  }
+
   return newobj;
 }
 
+/**
+ * 数组去重
+ */
+export function unique(arr) {
+  return Array.from(new Set(arr));
+}

@@ -27,9 +27,9 @@ export class Watcher {
 			this.getter = this.expOrFn;
 		} else {
 			//this.getter = parsePath(expOrFn);
-			this.value = this.get(); // watcher绑定时,访问原始未变化属性
-			this.newArr = cloneObj(this.value)
-			console.log(this.newArr)
+
+			this.value = cloneObj(this.get()); // watcher绑定时,访问原始未变化属性
+
 		}
 	}
 	get() {
@@ -40,10 +40,10 @@ export class Watcher {
 		}*/
 		const segments = this.expOrFn.split('.'); // 参数路径
 		let seen = segments.pop(); // 查找值
-		
+
 		let value;
-		value = traverse(this.vm._data, seen).pop();// 基本上实现了对复杂对象的监测
-		temp = []; // 清空用于记录递归查找的属性值
+		value = traverse(this.vm._data, seen).pop(); // 基本上实现了对复杂对象的监测
+		cleanTemp(); // 清空用于记录递归查找的属性值
 		//value = this.vm._data[this.expOrFn];
 		//value = this.getter;		// getter拿到变化后的值？
 
@@ -57,7 +57,7 @@ export class Watcher {
 	}
 	run() { // value发生变化，调用回调函数
 		const value = this.get();
-		if (value !== this.newArr) {
+		if (value !== this.value) {
 			this.value = value;
 			this.cb.call(this.vm);
 		}
@@ -70,9 +70,10 @@ export class Watcher {
 
 // 需要优化
 let temp = [];
+
 function traverse(obj, seen) {
 	if (obj[seen] && !isObj(obj[seen])) {
-		temp.push(obj[seen])
+		temp.push(obj[seen]);
 		return temp;
 	} else {
 		Object.keys(obj).forEach(key => {
@@ -81,5 +82,12 @@ function traverse(obj, seen) {
 			}
 		});
 		return temp
+	}
+
+}
+
+function cleanTemp() {
+	while (temp.length) {
+		temp.pop();
 	}
 }
