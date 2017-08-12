@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "babel src -d dist -w",
-    "start": "webpack-dev-server --content-base dist/ --hot --inline -w --progress --colors"
+    "start": "webpack-dev-server --content-base dist/ --hot --inline -w --progress --colors",
+    "flow": "flow"
   },
   "author": "tanghc",
   "license": "ISC",
