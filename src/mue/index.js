@@ -32,7 +32,7 @@ export default class Mue {
     this._isBeingDestroyed = false
 
     // 初始化vdom initrender
-    
+
 
 
     // observe initState
@@ -60,11 +60,11 @@ export default class Mue {
   }
 
   $watch(expOrFn, cb, options) {
-    new Watcher(this, expOrFn, cb);
+   return new Watcher(this, expOrFn, cb);
   }
   // lifecycle
   $mount(el) {
-    new mountComponent(el);
+   return mountComponent.call(this,el);
   }
   // renderMixin
   $nextTick() {
