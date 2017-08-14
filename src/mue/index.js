@@ -22,7 +22,6 @@ export default class Mue {
     Object.keys(this._data).forEach(key => this._proxy(key));
 
 
-
     //initLifecycle
     this._watcher = null
     this._inactive = null
@@ -55,16 +54,16 @@ export default class Mue {
     //return vnode
   }
 
-  _update() {
-
+  _update(vnode) {
+    // 生成Ast
   }
 
   $watch(expOrFn, cb, options) {
-   return new Watcher(this, expOrFn, cb);
+    return new Watcher(this, expOrFn, cb);
   }
   // lifecycle
   $mount(el) {
-   return mountComponent.call(this,el);
+    return mountComponent.call(this, el);
   }
   // renderMixin
   $nextTick() {

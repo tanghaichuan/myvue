@@ -14,6 +14,9 @@ var options = {
       }
     }
   }
+  // render() {
+
+  // }
 }
 
 const Vm = new Mue(options);
