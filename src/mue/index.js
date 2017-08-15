@@ -1,47 +1,46 @@
 // @flow
-
+import {
+  mixin
+} from './utils'
 import {
   Watcher
 } from './observe/watcher'
-
 import {
+  initLifecycle,
   mountComponent
-} from './instance/lifecycle'
-
-import {
-  initLifecycle
 } from './instance/lifecycle'
 import {
   initEvents
 } from './instance/events'
 import {
-  initRender
+  initRender,
+  generated
 } from './instance/render'
 import {
   initState
 } from './instance/state'
 
-export default class Mue {
+
+@mixin(generated)
+export default class Mue{
   constructor(options = {}) {
-    this.$_el = options.el;
+    this.$el = options.el;
     this.$options = options;
     this._data = this.$options.data;
-
-    Object.keys(this._data).forEach(key => this._proxy(key));
-
+    Object.keys(this._data).forEach(key => this._proxy(key)); // vm.data=>vm
     this._init();
   }
 
   _init() {
     initLifecycle.call(this);
-    initEvents.call(this);
-    initRender.call(this);
+    initEvents.call(this); // =>emit,on
+    initRender.call(this); // =>初始化vnode
     // callHook(vm, 'beforeCreate')
     //initInjections();
-    initState.call(this);
+    initState.call(this); // =>observe，解析options键值，收集依赖
     //initProvide();
     // callHook(vm, 'created')
-    this.$mount(this.$_el); // render
+    this.$mount(this.$el); // render
   }
 
   _render() {
