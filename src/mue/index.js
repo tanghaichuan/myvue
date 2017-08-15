@@ -1,10 +1,6 @@
 // @flow
 
 import {
-  observe
-} from "./observe/observer"
-
-import {
   Watcher
 } from './observe/watcher'
 
@@ -12,49 +8,48 @@ import {
   mountComponent
 } from './instance/lifecycle'
 
+import {
+  initLifecycle
+} from './instance/lifecycle'
+import {
+  initEvents
+} from './instance/events'
+import {
+  initRender
+} from './instance/render'
+import {
+  initState
+} from './instance/state'
+
 export default class Mue {
   constructor(options = {}) {
     this.$_el = options.el;
     this.$options = options;
     this._data = this.$options.data;
 
-
     Object.keys(this._data).forEach(key => this._proxy(key));
-
-
-    //initLifecycle
-    this._watcher = null
-    this._inactive = null
-    this._directInactive = false
-    this._isMounted = false
-    this._isDestroyed = false
-    this._isBeingDestroyed = false
-
-    // 初始化vdom initrender
-
-
-
-    // observe initState
-    observe(this._data, this); // initstate
-
-    // render
-    this.$mount(this.$_el);
-
 
     this._init();
   }
 
   _init() {
-    // initLifecycle
-
+    initLifecycle.call(this);
+    initEvents.call(this);
+    initRender.call(this);
+    // callHook(vm, 'beforeCreate')
+    //initInjections();
+    initState.call(this);
+    //initProvide();
+    // callHook(vm, 'created')
+    this.$mount(this.$_el); // render
   }
 
   _render() {
-
-    //return vnode
+    // 解析render函数
+    // 解析对象 return vnode
   }
 
-  _update(vnode) {
+  _update(vnode) { // =>调用_render
     // 生成Ast
   }
 

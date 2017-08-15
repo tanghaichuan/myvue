@@ -1,3 +1,6 @@
+export function initLifecycle() {
+
+}
 export function mountComponent(el) {
 	// 获取dom元素
 	el = document.querySelector(el);
@@ -31,8 +34,8 @@ export function mountComponent(el) {
 	updateComponent = () => {
 		this._update(this._render())
 	}
-	
-	//this._watcher = new Watcher(vm, updateComponent, noop)
+
+	//this._watcher = new Watcher(this, updateComponent, noop)
 
 	// if $vnode = null => mounted
 	return this;
